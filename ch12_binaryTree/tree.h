@@ -22,5 +22,15 @@ int treeInsert(node_t **root, node_t *t);
 
 void treeInorder(node_t *node);
 
+node_t *treeSearch(node_t *root, int key);
+
+node_t *treeMinumum(node_t *root);
+
+node_t *treeMaxmum(node_t *root);
+
+node_t *treePredecessor(node_t *root);
+
+node_t *treeSuccessor(node_t *root);
+
 #endif
 
