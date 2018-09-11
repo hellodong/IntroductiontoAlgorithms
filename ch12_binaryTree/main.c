@@ -34,6 +34,7 @@ int main (void)
 	printf("Key:%d\n", nodePtr->key);
 
 	node_t *basePtr = NULL;
+#if 0
 	for (idx = 0;idx < sizeof(array)/sizeof(array[0]);idx++) {
 		basePtr = treeSearch(root, array[idx]);
 		printf("Base Key:%d\n", basePtr->key);
@@ -51,6 +52,14 @@ int main (void)
 			printf("none\n\n");
 		}
 	}
+#endif
+
+	basePtr = treeSearch(root, array[4]);
+	printf("Base Key:%d\n", basePtr->key);
+	treeDelete(&root, basePtr);
+	treeInorder(root);
+
 
 	return 0;
 }
+

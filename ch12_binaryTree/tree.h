@@ -32,5 +32,7 @@ node_t *treePredecessor(node_t *root);
 
 node_t *treeSuccessor(node_t *root);
 
+void treeDelete(node_t **root, node_t *t);
+
 #endif
 

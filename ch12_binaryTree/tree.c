@@ -2,8 +2,8 @@
 
 #include "tree.h"
 
-#include <string.h>
 #include <stdio.h>
+#include <stdlib.h>
 
 
 int treeInsert(node_t **root, node_t *t)
@@ -108,6 +108,42 @@ node_t *treeSuccessor(node_t *root)
 	return pre;
 }
 
+static void transplant(node_t **root, node_t *u, node_t *v)
+{
+	if (NULL == u->p) {
+		*root = v;
+		v->p = NULL;	
+		return;
+	}
+	if (u->p->right == u){
+		u->p->right = v;
+	}else if (u->p->left == u){
+		u->p->left = v;
+	}
+	if (NULL != u->p) {
+		v->p = u->p;
+	}
+}
+
 void treeDelete(node_t **root, node_t *t)
 {
+	node_t *successor = NULL;
+
+	if (!t->left){
+		transplant(root, t, t->right);	
+	}else if (!t->right) {
+		transplant(root, t, t->left);
+	}else{
+		successor = treeMinumum(t->right);				
+		if (t->right != successor) {
+			transplant(root, successor, successor->right);
+			successor->right = t->right;
+			successor->right->p = successor;
+		}
+		transplant(root, t, successor);
+		successor->left = t->left;
+		successor->left->p = successor;
+	}
+	free(t);
 }
+
