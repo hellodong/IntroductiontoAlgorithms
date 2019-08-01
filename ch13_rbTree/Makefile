@@ -1,0 +1,29 @@
+
+
+BUILD_DIR=build
+OBJS	:=$(BUILD_DIR)/rbTreex.o
+OBJS	+=$(BUILD_DIR)/main.o
+
+CC=gcc
+CFLAGS :=
+LDFLAGS :=
+BIN		:=rbTreeDemo
+
+all:$(BUILD_DIR) $(BIN)
+
+$(BUILD_DIR):
+	@mkdir $@
+$(BIN):$(OBJS)
+	$(CC) $^ -o $@ $(LDFLAGS)
+$(BUILD_DIR)/%.o:%.c
+	$(CC) $< $(CFLAGS) -c -o $@
+
+.PHONY:clean distclean
+
+clean:
+	rm $(OBJS) $(BIN) -rf
+
+distclean:
+	rm $(BUILD_DIR) $(BIN) -rf
+
+
