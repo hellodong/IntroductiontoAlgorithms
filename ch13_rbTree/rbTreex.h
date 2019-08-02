@@ -29,5 +29,7 @@ typedef struct _rbTree_t
 
 int rbTreexInit(stRbTreeRoot_t *t);
 
+int rbTreexInsert(stRbTreeRoot_t *t, stRbNode_t *z);
+
 
 #endif

@@ -6,27 +6,63 @@
 #include "rbTreex.h"
 
 
-static const stRbNode_t gNil={
+static stRbNode_t gNil={
     .color = RBCOLOR_BLACK,
     .dataPtr = NULL,
 };
 
 
-static void leftRotate(stRbTreeRoot_t *t, stRbNode_t *z)
+static void leftRotate(stRbTreeRoot_t *t, stRbNode_t *x)
 {
-    /* TODO */
+	stRbNode_t *y=t->nil;
+
+	y = x->rightChild;
+	x->rightChild = y->leftChild;	
+	if (t->nil != y->leftChild){
+		y->leftChild->parent = x;
+	}
+
+	y->parent = x->parent;
+	if (t->root == x){
+		t->root = y;
+	}else if (x->parent->leftChild == x){
+		x->parent->leftChild = y;
+	}else{
+		x->parent->rightChild = y;
+	}
+
+	x->parent = y;
+	y->leftChild = x;
 }
 
-static void rightRotate(stRbTreeRoot_t *t, stRbNode_t *z)
+static void rightRotate(stRbTreeRoot_t *t, stRbNode_t *x)
 {
-    /* TODO */
+	stRbNode_t *y=t->nil;
+
+	y = x->leftChild;
+	x->leftChild = y->rightChild;
+	if (y->rightChild != t->nil){
+		y->rightChild->parent = x;
+	}
+
+	y->parent = x->parent;
+	if (t->root == x){
+		t->root = y;
+	}else if (x->parent->leftChild == x){
+		x->parent->leftChild = y;
+	}else{
+		x->parent->rightChild = y;
+	}
+	
+	x->parent = y;
+	y->rightChild = x;
 }
 
 static void insertFix(stRbTreeRoot_t *t, stRbNode_t *z)
 {
+    stRbNode_t *y = t->nil;
     while(z->parent->color == RBCOLOR_RED) {
-        if (z->parent == z->parent->parent->leftChild){  //left subtree
-            stRbNode_t *y;
+        if (z->parent == z->parent->parent->leftChild){  //parent node is left subtree
             y = z->parent->parent->rightChild;
             if (y->color == RBCOLOR_RED){   // case 1, uncle is red  
                 z->parent->color = RBCOLOR_BLACK;
@@ -43,10 +79,26 @@ static void insertFix(stRbTreeRoot_t *t, stRbNode_t *z)
                 z->parent->color = RBCOLOR_BLACK;
                 z->parent->parent->color = RBCOLOR_RED;
                 z->parent->parent->rightChild->color = RBCOLOR_BLACK;
-                rightRotate(t, z);
+                rightRotate(t, z->parent->parent);
             }
-        }else{
-            /* TODO */
+        }else{									//parent node is right subtree
+			y = z->parent->parent->leftChild;	
+			if (y->color == RBCOLOR_RED) {		//case 1, uncle is red
+				z->parent->color = RBCOLOR_BLACK;
+				y->color = RBCOLOR_BLACK;
+				z->parent->parent->color = RBCOLOR_RED;
+				z=z->parent->parent;
+				continue;
+			}else if (z == z->parent->leftChild){ //case 2, uncle is black, node z is parent's left child
+				rightRotate(t, z->parent);	
+				z=z->parent;
+			}
+
+			if (z == z->parent->rightChild){	//case 3, uncle is black, node z is parent's right child
+				z->parent->color = RBCOLOR_BLACK;
+				z->parent->parent->color = RBCOLOR_RED;
+				leftRotate(t, z->parent->parent);
+			}
         }
     }
     t->root->color = RBCOLOR_BLACK;
