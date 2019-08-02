@@ -23,6 +23,7 @@ typedef struct _rbNode_t
 typedef struct _rbTree_t
 {
     stRbNode_t *root;
+    stRbNode_t *nil;
 }stRbTreeRoot_t;
 
 
