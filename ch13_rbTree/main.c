@@ -13,7 +13,15 @@ int main(int argc, char *argv[])
     rbTreexInit(&tree);
 
 	nodePtr = (stRbNode_t *)malloc(sizeof(*nodePtr));
-	nodePtr->key = 10;
+	nodePtr->key = 17;
+	rbTreexInsert(&tree, nodePtr);
+
+	nodePtr = (stRbNode_t *)malloc(sizeof(*nodePtr));
+	nodePtr->key = 14;
+	rbTreexInsert(&tree, nodePtr);
+
+	nodePtr = (stRbNode_t *)malloc(sizeof(*nodePtr));
+	nodePtr->key = 13;
 	rbTreexInsert(&tree, nodePtr);
 
 	nodePtr = (stRbNode_t *)malloc(sizeof(*nodePtr));
@@ -21,7 +29,14 @@ int main(int argc, char *argv[])
 	rbTreexInsert(&tree, nodePtr);
 
 	nodePtr = (stRbNode_t *)malloc(sizeof(*nodePtr));
-	nodePtr->key = 13;
+	nodePtr->key = 10;
 	rbTreexInsert(&tree, nodePtr);
+
+    rbTreexInorderWalk(&tree);
+
+    rbTreexPreorderWalk(&tree);
+
+    rbTreexPostorderWalk(&tree);
+
     return 0;
 }

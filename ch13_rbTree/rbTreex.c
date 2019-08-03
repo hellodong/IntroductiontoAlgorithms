@@ -2,6 +2,7 @@
 
 #include <string.h>
 #include <stdlib.h>
+#include <stdio.h>
 
 #include "rbTreex.h"
 
@@ -158,6 +159,55 @@ stRbNode_t* rbTreexSearch(stRbTreeRoot_t *t, int key)
 {
     /* TODO */
     return NULL;
+}
+
+static void inorderWalk(stRbTreeRoot_t *t, stRbNode_t *x)
+{
+    if (x != t->nil){
+        inorderWalk(t, x->leftChild);
+        printf("Key:%d\r\n", x->key);
+        inorderWalk(t, x->rightChild);
+    }
+}
+
+static void preorderWalk(stRbTreeRoot_t *t, stRbNode_t *x)
+{
+    if (x != t->nil){
+        printf("Key:%d\r\n", x->key);
+        inorderWalk(t, x->leftChild);
+        inorderWalk(t, x->rightChild);
+    }
+}
+
+static void postorderWalk(stRbTreeRoot_t *t, stRbNode_t *x)
+{
+    if (x != t->nil){
+        inorderWalk(t, x->leftChild);
+        inorderWalk(t, x->rightChild);
+        printf("Key:%d\r\n", x->key);
+    }
+}
+
+
+void rbTreexInorderWalk(stRbTreeRoot_t *t)
+{
+    printf("Inorder:\r\n");
+    inorderWalk(t, t->root); 
+    printf("\r\n");
+}
+
+void rbTreexPreorderWalk(stRbTreeRoot_t *t)
+{
+    printf("Preorder:\r\n");
+    preorderWalk(t, t->root); 
+    printf("\r\n");
+}
+
+void rbTreexPostorderWalk(stRbTreeRoot_t *t)
+{
+    printf("Postorder:\r\n");
+    postorderWalk(t, t->root); 
+    printf("\r\n");
 }
 
 

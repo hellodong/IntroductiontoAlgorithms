@@ -31,5 +31,11 @@ int rbTreexInit(stRbTreeRoot_t *t);
 
 int rbTreexInsert(stRbTreeRoot_t *t, stRbNode_t *z);
 
+void rbTreexInorderWalk(stRbTreeRoot_t *t);
+
+void rbTreexPreorderWalk(stRbTreeRoot_t *t);
+
+void rbTreexPostorderWalk(stRbTreeRoot_t *t);
+
 
 #endif
