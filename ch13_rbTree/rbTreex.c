@@ -105,12 +105,6 @@ static void insertFix(stRbTreeRoot_t *t, stRbNode_t *z)
     t->root->color = RBCOLOR_BLACK;
 }
 
-static void delFix(stRbTreeRoot_t *t, stRbNode_t *z)
-{
-    /* TODO */
-}
-
-
 int rbTreexInit(stRbTreeRoot_t *t)
 {
     t->nil = &gNil;
@@ -149,10 +143,63 @@ int rbTreexInsert(stRbTreeRoot_t *t, stRbNode_t *z)
     return 0;
 }
 
-int rbTreexDel(stRbTreeRoot_t *t, int key)
+static void transplant(stRbTreeRoot_t *t, stRbNode_t *u, stRbNode_t *v)
+{
+    if (t->root == u) {
+        t->root = v;
+    }else if (u->parent->leftChild == u){
+        u->parent->leftChild = v;
+    }else{
+        u->parent->rightChild = v;
+    }
+    v->parent = u->parent;
+}
+
+static void delFix(stRbTreeRoot_t *t, stRbNode_t *x)
 {
     /* TODO */
+}
+
+int rbTreexDel(stRbTreeRoot_t *t, stRbNode_t *z)
+{
+    int yoriColor;
+    stRbNode_t *y = t->nil, *x= t->nil;
+
+    yoriColor = z->color;
+    y = z;
+    if (z->leftChild == t->nil){            //z left subtree is null
+        transplant(t, z, z->rightChild);    
+        x = z->rightChild;
+    }else if (z->rightChild == t->nil){     //z right subtree is null
+        transplant(t, z, z->leftChild);
+        x = z->leftChild;
+    }else{                                  //z two subtree is not null
+        y = rtTreexMin(t, z->rightChild);
+        yoriColor = y->color;
+        x=y->rightChild;
+        if(z->rightChild == y){
+        }else{
+            transplant(t, y, x);
+            y->rightChild = z->rightChild;
+            z->rightChild->parent = y;
+        }
+        transplant(t, z, y);
+        y->leftChild = z->leftChild;
+        z->leftChild->parent = y;
+        y->color = z->color;
+    }
+    if (yoriColor == RBCOLOR_BLACK){
+        delFix(t, x);
+    }
     return 0;
+}
+
+stRbNode_t *rbTreexMin(stRbTreeRoot_t *t, stRbNode_t *z)
+{
+    while(z->leftChild != t->nil){
+        z = z->leftChild;
+    }
+    return z;
 }
 
 stRbNode_t* rbTreexSearch(stRbTreeRoot_t *t, int key)
