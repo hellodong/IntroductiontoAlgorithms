@@ -157,7 +157,38 @@ static void transplant(stRbTreeRoot_t *t, stRbNode_t *u, stRbNode_t *v)
 
 static void delFix(stRbTreeRoot_t *t, stRbNode_t *x)
 {
-    /* TODO */
+	stRbNode_t *w = t->nil;
+	while(t->root != x && x->color == RBCOLOR_BLACK){
+		if (x == x->parent->leftChild){
+			w = x->parent->rightChild;
+			if (w->color == RBCOLOR_RED){					//case 1, x's brother w,color is red
+				x->parent->color = RBCOLOR_RED;
+				w->color = RBCOLOR_BLACK;
+				w=w->leftChild;
+				leftRotate(t, x->parent);
+			}
+			if (w->leftChild->color == RBCOLOR_BLACK && 	//case2, x's brother w, color is black. w's left color is black, w's right color is black
+				w->rightChild->color == RBCOLOR_BLACK){
+				w->color = RBCOLOR_RED;
+				x = x->parent;
+			}else{
+				if (w->rightChild->color == RBCOLOR_BLACK){	//case3, x's brother w, color is black, w's left color is red, w's right color is black
+					w->color = RBCOLOR_RED;
+					w->leftChild->color = RBCOLOR_BLACK;
+					rightRotate(t, w);	
+					w = w->parent;
+				}
+				w->color = x->parent->color;				//case4, x's brother w, color is black, w's right color is red
+				x->parent->color = RBCOLOR_BLACK;
+				w->rightChild->color = RBCOLOR_BLACK;
+				leftRotate(t, x->parent);
+				x = t->root;
+			}
+		}else{
+
+		}
+	}
+	x->color = RBCOLOR_BLACK;
 }
 
 int rbTreexDel(stRbTreeRoot_t *t, stRbNode_t *z)
@@ -174,7 +205,7 @@ int rbTreexDel(stRbTreeRoot_t *t, stRbNode_t *z)
         transplant(t, z, z->leftChild);
         x = z->leftChild;
     }else{                                  //z two subtree is not null
-        y = rtTreexMin(t, z->rightChild);
+        y = rbTreexMin(t, z->rightChild);
         yoriColor = y->color;
         x=y->rightChild;
         if(z->rightChild == y){
