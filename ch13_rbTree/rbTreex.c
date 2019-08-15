@@ -159,7 +159,7 @@ static void delFix(stRbTreeRoot_t *t, stRbNode_t *x)
 {
 	stRbNode_t *w = t->nil;
 	while(t->root != x && x->color == RBCOLOR_BLACK){
-		if (x == x->parent->leftChild){
+		if (x == x->parent->leftChild){						// left subtree
 			w = x->parent->rightChild;
 			if (w->color == RBCOLOR_RED){					//case 1, x's brother w,color is red
 				x->parent->color = RBCOLOR_RED;
@@ -184,8 +184,31 @@ static void delFix(stRbTreeRoot_t *t, stRbNode_t *x)
 				leftRotate(t, x->parent);
 				x = t->root;
 			}
-		}else{
-
+		}else{												// right subtree
+			x = x->parent->leftChild;						
+			if (RBCOLOR_RED == w->color){					// case 1, x's brother w, color is red
+				w->color = RBCOLOR_BLACK;
+				x->parent->color = RBCOLOR_RED;
+				rightRotate(t, w);
+				w = x->parent->leftChild;
+			}
+			if (RBCOLOR_BLACK == w->leftChild->color &&		// case 2, x's brother w, color is black, w's left node color is black, w's right node color is black
+				RBCOLOR_BLACK == w->rightChild->color){
+				w->color = RBCOLOR_RED;
+				x = x->parent;
+			}else{
+				if (RBCOLOR_BLACK == w->leftChild->color){	// case 3, x's brother w, color is black, w's left node color is black, w's right node color is red
+					w->leftChild->color = RBCOLOR_BLACK;
+					w->color = RBCOLOR_RED;
+					w->rightChild->color = RBCOLOR_BLACK;
+					leftRotate(t, w);
+					w = x->parent->leftChild;
+				}
+				w->color = x->parent->color;				// case 4, x's brother w, color is black,w's left node color is black
+				x->parent->color = RBCOLOR_BLACK;
+				rightRotate(t, x->parent);
+				x = t->root;
+			}
 		}
 	}
 	x->color = RBCOLOR_BLACK;
