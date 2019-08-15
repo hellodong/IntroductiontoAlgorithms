@@ -5,7 +5,7 @@ OBJS	:=$(BUILD_DIR)/rbTreex.o
 OBJS	+=$(BUILD_DIR)/main.o
 
 CC=gcc
-CFLAGS := -g -Wall
+CFLAGS	:= -g -Wall
 LDFLAGS :=
 BIN		:=rbTreeDemo
 
