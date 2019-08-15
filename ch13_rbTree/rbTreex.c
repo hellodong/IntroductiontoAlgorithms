@@ -258,8 +258,17 @@ stRbNode_t *rbTreexMin(stRbTreeRoot_t *t, stRbNode_t *z)
 
 stRbNode_t* rbTreexSearch(stRbTreeRoot_t *t, int key)
 {
-    /* TODO */
-    return NULL;
+	stRbNode_t *x = t->nil;
+
+	x = t->root;
+	while(x != t->nil && key != x->key){
+		if (key < x->key){
+			x = x->leftChild;
+		}else{
+			x = x->rightChild;
+		}
+	}
+	return x;
 }
 
 static void inorderWalk(stRbTreeRoot_t *t, stRbNode_t *x)
