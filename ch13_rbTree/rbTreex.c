@@ -185,7 +185,7 @@ static void delFix(stRbTreeRoot_t *t, stRbNode_t *x)
 				x = t->root;
 			}
 		}else{												// right subtree
-			x = x->parent->leftChild;						
+			w = x->parent->leftChild;						
 			if (RBCOLOR_RED == w->color){					// case 1, x's brother w, color is red
 				w->color = RBCOLOR_BLACK;
 				x->parent->color = RBCOLOR_RED;
@@ -232,6 +232,7 @@ int rbTreexDel(stRbTreeRoot_t *t, stRbNode_t *z)
         yoriColor = y->color;
         x=y->rightChild;
         if(z->rightChild == y){
+			x->parent = y;
         }else{
             transplant(t, y, x);
             y->rightChild = z->rightChild;

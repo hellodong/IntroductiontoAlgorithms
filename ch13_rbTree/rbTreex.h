@@ -31,6 +31,8 @@ int rbTreexInit(stRbTreeRoot_t *t);
 
 int rbTreexInsert(stRbTreeRoot_t *t, stRbNode_t *z);
 
+int rbTreexDel(stRbTreeRoot_t *t, stRbNode_t *z);
+
 stRbNode_t *rbTreexMin(stRbTreeRoot_t *t, stRbNode_t *z);
 
 stRbNode_t* rbTreexSearch(stRbTreeRoot_t *t, int key);
