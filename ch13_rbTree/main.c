@@ -1,5 +1,6 @@
 
 
+#include <stdio.h>
 #include <stdlib.h>
 
 #include "rbTreex.h"
@@ -9,6 +10,7 @@ int main(int argc, char *argv[])
 {
     stRbTreeRoot_t tree;
 	stRbNode_t *nodePtr;
+	int key;
 
     rbTreexInit(&tree);
 
@@ -34,9 +36,15 @@ int main(int argc, char *argv[])
 
     rbTreexInorderWalk(&tree);
 
-    rbTreexPreorderWalk(&tree);
+	key = 11;
+	nodePtr = rbTreexSearch(&tree, key);
+	if (nodePtr != tree.nil){
+		printf("Found Key:%d\r\n", nodePtr->key);
+	}else{
+		printf("Can't found Key\r\n");
+	}
 
-    rbTreexPostorderWalk(&tree);
+
 
     return 0;
 }
